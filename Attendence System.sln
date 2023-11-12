@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Attendence System", "Attendence System.phpproj", "{13BAA3FD-5DFD-4A9E-B9EC-712CD8438BBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13BAA3FD-5DFD-4A9E-B9EC-712CD8438BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13BAA3FD-5DFD-4A9E-B9EC-712CD8438BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13BAA3FD-5DFD-4A9E-B9EC-712CD8438BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13BAA3FD-5DFD-4A9E-B9EC-712CD8438BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5241378-2A84-464C-9757-CB912FB06408}
+	EndGlobalSection
+EndGlobal
