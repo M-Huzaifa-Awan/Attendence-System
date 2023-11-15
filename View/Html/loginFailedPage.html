@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Attendance System</title>
+    <link rel="stylesheet" href="../Css/loginPage.css" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="logo">
+            <img src="https://seeklogo.com/images/N/numl-logo-8250E1FBC3-seeklogo.com.png" alt="">
+        </div>
+        <div class="text-center mt-4 name">
+            Wrong Credentials Try Again
+        </div>
+        <form class="p-3 mt-3" method="POST" action="/Controller/loginPageController.php">
+
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text" name="email" id="email" placeholder="Email">
+            </div>
+
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" name="password" id="pwd" placeholder="Password">
+            </div>
+
+            <button class="btn mt-3" type="submit">Login</button>
+
+        </form>
+    </div>
+</body>
+</html>

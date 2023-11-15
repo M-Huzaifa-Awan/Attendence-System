@@ -13,5 +13,7 @@ if ($result) {
     exit();
 }
 else {
-    echo "Invalid email or password";
+    header('Location: ../View/Html/loginFailedPage.html');
+    exit();
 }
+
