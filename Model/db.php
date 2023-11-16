@@ -9,7 +9,7 @@ class db
 
     private $password = "894cbe6a";
 
-    private $database = "university_db";
+    private $database = "attendencesystem_db";
 
     public function __construct()
     {

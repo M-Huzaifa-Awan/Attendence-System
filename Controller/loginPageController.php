@@ -2,18 +2,23 @@
 
 require_once('../Model/user.php');
 
+// Assuming you get the email and password from the POST request
 $email = $_POST['email'];
 $password = $_POST['password'];
+
+// Create a User object
 $user = new User();
 
+// Call the findByEmailAndPassword method
 $result = $user->findByEmailAndPassword($email, $password);
 
+// Send the response based on the result
 if ($result) {
-    header('Location: ../View/Html/dashboard.html');
-    exit();
+    // Authentication successful
+    session_start();
+    $_SESSION['user'] = $user;
+    echo 'true';
+} else {
+    // Authentication failed
+    echo 'false';
 }
-else {
-    header('Location: ../View/Html/loginFailedPage.html');
-    exit();
-}
-

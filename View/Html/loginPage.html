@@ -3,16 +3,18 @@
 <head>
     <title>Attendance System</title>
     <link rel="stylesheet" href="../Css/loginPage.css" />
+    <script type="module" src="../login.js"></script>
+    <script src="../../Controller/loginPageController.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <div class="logo">
             <img src="https://seeklogo.com/images/N/numl-logo-8250E1FBC3-seeklogo.com.png" alt="">
         </div>
-        <div class="text-center mt-4 name">
+        <div class="text-center mt-4 name" id="status">
             Enter Credentials
         </div>
-        <form class="p-3 mt-3" method="POST" action="/Controller/loginPageController.php">
+        <form class="p-3 mt-3">
 
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
@@ -24,7 +26,8 @@
                 <input type="password" name="password" id="pwd" placeholder="Password">
             </div>
 
-            <button class="btn mt-3" type="submit">Login</button>
+            <input class="btn mt-3" type="button" onclick="login();" value="Login">
+
 
         </form>
     </div>
