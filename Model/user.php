@@ -8,7 +8,7 @@ class User extends db
 
     public function findByEmailAndPassword($email, $password)
     {
-        
+
         $conn = $this->con;
 
         $stmt = $conn->prepare('SELECT * FROM loginInfo WHERE email = ? AND password = ?');
@@ -33,6 +33,16 @@ class User extends db
         } else {
             return false;
         }
+
+    }
+
+    public function getStudentData($code)
+    {
+        $conn = $this->con;
+        // Query database
+        $result = mysqli_query($conn, "SELECT * FROM $code");
+
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     }
 

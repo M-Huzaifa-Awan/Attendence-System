@@ -1,16 +1,33 @@
-﻿async function getDashboardData(session, semester, section, subject) {
+﻿
+function getDashboardData(session, semester, section) {
+    var code = getCode(session, semester, section);
+    code = "student_" + String(code); 
 
-    const code = getCode(session, semester, section, subject);
+    function sendAjaxRequest(action, callback) {
+        var xhr = new XMLHttpRequest();
 
-    const data = await fetch('/dashboardController.php', {
-        method: 'POST',
-        body: JSON.stringify({ code })
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) { 
+                if (xhr.status == 200) {
+                    callback(xhr.responseText);
+                } else {
+                    alert("Error in AJAX request");
+                }
+            }
+        }
+
+        xhr.open('POST', '../../Controller/dashboardController.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); 
+        xhr.send('action=' + action + '&code=' + code);
+    }
+
+    sendAjaxRequest('getStudentData', function (response) {
+        var parsedResponse = JSON.parse(response);
+        createTable(parsedResponse);
     });
-
-    return await data.json();
-
 }
-function getCode(session, semester, section, subject) {
+
+function getCode(session, semester, section) {
 
     let code = '';
 
@@ -28,7 +45,10 @@ function getCode(session, semester, section, subject) {
         code += '2';
     }
 
-    if (subject === 'SE') {
+    return code;
+
+}
+/*if (subject === 'SE') {
         code += '1';
     } else if (subject === 'WP') {
         code += '2';
@@ -44,8 +64,4 @@ function getCode(session, semester, section, subject) {
         code += '7';
     } else if (subject === 'DAA') {
         code += '8';
-    }
-
-    return code;
-
-}
+    }*/

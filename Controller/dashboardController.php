@@ -1,13 +1,8 @@
 <?php
 
-$code = json_decode(file_get_contents('php://input'))->code;
-
-$code = "`" . (string) $code . "`";
-
-// Get User model from session
+$code = $_POST['code'];
 $user = $_SESSION['user'];
 
-$data = $user->getAttendanceData($code);
-
-echo json_encode($data);
+$result = $user->getStudentData($code);
+echo json_encode($result);
 ?>

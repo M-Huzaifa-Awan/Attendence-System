@@ -58,6 +58,12 @@
             </select>
         </div>
 
+
+        <div class="date-container">
+            <p class="mb-0">Today's Date: <span id="todayDate"></span></p>
+        </div>
+
+        <button class="btn btn-primary" id="submitButton" disabled>Enter</button>
         <div class="dropdown mr-3">
             <select class="btn btn-secondary" id="subjectDropdown">
                 <option value="" selected disabled>Select Subject</option>
@@ -71,14 +77,20 @@
                 <option value="DAA">Design & Analysis of Algorithmss</option>
             </select>
         </div>
-
-        <div class="date-container">
-            <p class="mb-0">Today's Date: <span id="todayDate"></span></p>
+        <div class="dropdown mr-3">
+            <select class="btn btn-secondary" id="subjectDropdown">
+                <option value="" selected disabled>Select Slot</option>
+                <option value="1">Slot 1</option>
+                <option value="2">Slot 2</option>
+            </select>
         </div>
-
-        <button class="btn btn-primary" id="submitButton" disabled>Enter</button>
+        <button class="btn btn-primary" id="submitAttendence">Submit</button>
 
     </nav>
+    <div id="tableContainer"></div>
+
+
+
     <script>
         var today = new Date();
         var formattedDate = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
@@ -93,9 +105,8 @@
             var session = $("#sessionDropdown").val();
             var semester = $("#semesterDropdown").val();
             var section = $("#sectionDropdown").val();
-            var subject = $("#subjectDropdown").val();
 
-            if (session !== null && semester !== null && section !== null && subject !== null) {
+            if (session !== null && semester !== null && section !== null) {
                 $("#submitButton").prop('disabled', false);
             } else {
                 $("#submitButton").prop('disabled', true);
@@ -107,13 +118,75 @@
         });
 
         function sendSelectedOptions() {
-            const session   = $("#sessionDropdown").val();
-            const semester  = $("#semesterDropdown").val();
-            const section   = $("#sectionDropdown").val();
-            const subject   = $("#subjectDropdown").val();
-            const data      = getDashboardData(session, semester, section, subject);
+            const session = $("#sessionDropdown").val();
+            const semester = $("#semesterDropdown").val();
+            const section = $("#sectionDropdown").val();
+            getDashboardData(session, semester, section);
         }
-            
+
+        function createTable(data) {
+        // Create a table element with Bootstrap classes
+        var table = document.createElement("table");
+        table.classList.add("table", "table-bordered", "table-striped");
+    
+        // Create a table header row with Bootstrap classes
+        var headerRow = table.insertRow(0);
+        headerRow.classList.add("thead-dark");
+    
+        // Hardcoded column names
+        var columnNames = ["Roll No", "Name", "Status"];
+    
+        // Create header cells
+        for (var i = 0; i < columnNames.length; i++) {
+            var th = document.createElement("th");
+            th.textContent = columnNames[i];
+            th.classList.add("text-left"); // Align text to the left
+            headerRow.appendChild(th);
+        }
+    
+        // Create table rows and cells with Bootstrap classes
+        for (var i = 0; i < data.length; i++) {
+            var row = table.insertRow(i + 1);
+    
+            // Add Roll No
+            var cellRollNo = row.insertCell();
+            cellRollNo.textContent = data[i]["rollNo"];
+            cellRollNo.classList.add("text-left");
+    
+            // Add Name
+            var cellName = row.insertCell();
+            cellName.textContent = data[i]["NAME"];
+            cellName.classList.add("text-left");
+    
+            // Add Status with dropdown
+            var cellStatus = row.insertCell();
+            var statusDropdown = createStatusDropdown(); // Create a dropdown for status
+            cellStatus.appendChild(statusDropdown);
+        }
+    
+        // Append the table to the container
+        document.getElementById("tableContainer").appendChild(table);
+        }
+        
+        // Function to create a dropdown for status
+        function createStatusDropdown() {
+            var dropdown = document.createElement("select");
+            dropdown.classList.add("form-control");
+        
+            var optionPresent = document.createElement("option");
+            optionPresent.value = "Present";
+            optionPresent.text = "Present";
+        
+            var optionAbsent = document.createElement("option");
+            optionAbsent.value = "Absent";
+            optionAbsent.text = "Absent";
+        
+            // Add options to the dropdown
+            dropdown.appendChild(optionPresent);
+            dropdown.appendChild(optionAbsent);
+        
+            return dropdown;
+        }
 
     </script>
 
