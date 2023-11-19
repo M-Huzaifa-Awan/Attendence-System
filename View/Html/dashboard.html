@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Dashboard</title>
+    <title>Attendance System</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -16,6 +16,24 @@
         .date-container {
             margin-right: 10px;
         }
+        .navbar {
+            border: 2px solid black; /* Solid black border */
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+            .logo-container img {
+                width: 150px; /* Adjust the size as needed */
+                height: auto;
+            }
+
+        /* Clear the default margin on the body */
+        body {
+            margin: 0;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -24,9 +42,12 @@
 </head>
 
 <body>
-
+ 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Attendance System</a>
+        <div class="logo-container">
+      <img src="https://seeklogo.com/images/N/numl-logo-8250E1FBC3-seeklogo.com.png" alt="NUMl Logo">
+    </div>
+
 
         <div class="dropdown mr-3">
             <select class="btn btn-secondary" id="sessionDropdown">
@@ -64,19 +85,13 @@
         </div>
 
         <button class="btn btn-primary" id="submitButton" disabled>Enter</button>
+
         <div class="dropdown mr-3">
             <select class="btn btn-secondary" id="subjectDropdown">
                 <option value="" selected disabled>Select Subject</option>
-                <option value="SE">Software Engineering</option>
-                <option value="WP">Web Programming</option>
-                <option value="Lab-Web Prog">Lab-Web Programming</option>
-                <option value="DM">Digital Marketing</option>
-                <option value="AOOP">Advance Object Oriented Programming</option>
-                <option value="Lab-AOOP">Lab-Advance Object Oriented Programming</option>
-                <option value="DE">Differential Equations</option>
-                <option value="DAA">Design & Analysis of Algorithmss</option>
             </select>
         </div>
+
         <div class="dropdown mr-3">
             <select class="btn btn-secondary" id="subjectDropdown">
                 <option value="" selected disabled>Select Slot</option>
@@ -122,69 +137,71 @@
             const semester = $("#semesterDropdown").val();
             const section = $("#sectionDropdown").val();
             getDashboardData(session, semester, section);
+            getSubjectData(semester);
+
         }
 
         function createTable(data) {
-        // Create a table element with Bootstrap classes
-        var table = document.createElement("table");
-        table.classList.add("table", "table-bordered", "table-striped");
-    
-        // Create a table header row with Bootstrap classes
-        var headerRow = table.insertRow(0);
-        headerRow.classList.add("thead-dark");
-    
-        // Hardcoded column names
-        var columnNames = ["Roll No", "Name", "Status"];
-    
-        // Create header cells
-        for (var i = 0; i < columnNames.length; i++) {
-            var th = document.createElement("th");
-            th.textContent = columnNames[i];
-            th.classList.add("text-left"); // Align text to the left
-            headerRow.appendChild(th);
+            // Create a table element with Bootstrap classes
+            var table = document.createElement("table");
+            table.classList.add("table", "table-bordered", "table-striped");
+
+            // Create a table header row with Bootstrap classes
+            var headerRow = table.insertRow(0);
+            headerRow.classList.add("thead-dark");
+
+            // Hardcoded column names
+            var columnNames = ["Roll No", "Name", "Status"];
+
+            // Create header cells
+            for (var i = 0; i < columnNames.length; i++) {
+                var th = document.createElement("th");
+                th.textContent = columnNames[i];
+                th.classList.add("text-left"); // Align text to the left
+                headerRow.appendChild(th);
+            }
+
+            // Create table rows and cells with Bootstrap classes
+            for (var i = 0; i < data.length; i++) {
+                var row = table.insertRow(i + 1);
+
+                // Add Roll No
+                var cellRollNo = row.insertCell();
+                cellRollNo.textContent = data[i]["rollNo"];
+                cellRollNo.classList.add("text-left");
+
+                // Add Name
+                var cellName = row.insertCell();
+                cellName.textContent = data[i]["NAME"];
+                cellName.classList.add("text-left");
+
+                // Add Status with dropdown
+                var cellStatus = row.insertCell();
+                var statusDropdown = createStatusDropdown(); // Create a dropdown for status
+                cellStatus.appendChild(statusDropdown);
+            }
+
+            // Append the table to the container
+            document.getElementById("tableContainer").appendChild(table);
         }
-    
-        // Create table rows and cells with Bootstrap classes
-        for (var i = 0; i < data.length; i++) {
-            var row = table.insertRow(i + 1);
-    
-            // Add Roll No
-            var cellRollNo = row.insertCell();
-            cellRollNo.textContent = data[i]["rollNo"];
-            cellRollNo.classList.add("text-left");
-    
-            // Add Name
-            var cellName = row.insertCell();
-            cellName.textContent = data[i]["NAME"];
-            cellName.classList.add("text-left");
-    
-            // Add Status with dropdown
-            var cellStatus = row.insertCell();
-            var statusDropdown = createStatusDropdown(); // Create a dropdown for status
-            cellStatus.appendChild(statusDropdown);
-        }
-    
-        // Append the table to the container
-        document.getElementById("tableContainer").appendChild(table);
-        }
-        
+
         // Function to create a dropdown for status
         function createStatusDropdown() {
             var dropdown = document.createElement("select");
             dropdown.classList.add("form-control");
-        
+
             var optionPresent = document.createElement("option");
             optionPresent.value = "Present";
             optionPresent.text = "Present";
-        
+
             var optionAbsent = document.createElement("option");
             optionAbsent.value = "Absent";
             optionAbsent.text = "Absent";
-        
+
             // Add options to the dropdown
             dropdown.appendChild(optionPresent);
             dropdown.appendChild(optionAbsent);
-        
+
             return dropdown;
         }
 

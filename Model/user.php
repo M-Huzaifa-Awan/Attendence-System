@@ -39,9 +39,15 @@ class User extends db
     public function getStudentData($code)
     {
         $conn = $this->con;
-        // Query database
         $result = mysqli_query($conn, "SELECT * FROM $code");
 
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    }
+    public function getSubjectData($sem)
+    {
+        $conn = $this->con;
+        $result = mysqli_query($conn, "SELECT code,name FROM subjName WHERE sem = $sem");
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     }
