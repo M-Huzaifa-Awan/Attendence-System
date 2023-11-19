@@ -5,7 +5,7 @@
   <PropertyGroup>
     <EnvName>PHPDev</EnvName>
     <RuntimeVersion>8.2</RuntimeVersion>
-    <SpecificPageValue>Public/index.html</SpecificPageValue>
+    <SpecificPageValue>View/Html/dashboard.html</SpecificPageValue>
     <StartAction>SpecificPage</StartAction>
   </PropertyGroup>
 </Project>
