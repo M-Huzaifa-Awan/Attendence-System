@@ -1,4 +1,4 @@
-﻿
+﻿var code = '';
 function sendAjaxRequest(action,data, callback) {
         var xhr = new XMLHttpRequest();
 
@@ -17,7 +17,7 @@ function sendAjaxRequest(action,data, callback) {
         xhr.send('action=' + action + '&data=' + data);
     }
 function getDashboardData(session, semester, section) {
-    var code = getCode(session, semester, section);
+    code = getCode(session, semester, section);
     code = "student_" + String(code); 
 
     sendAjaxRequest('getStudentData',code, function (response) {
@@ -41,10 +41,25 @@ function getSubjectData(semester) {
 
         for (var i = 0; i < response.length; i++) {
             var option = document.createElement("option");
-            option.value = response[i].code; // Assuming the array items have a 'code' property
-            option.text = response[i].name; // Assuming the array items have a 'name' property
+            option.value = response[i].code; 
+            option.text = response[i].name; 
             subjectDropdown.appendChild(option);
         }
+    });
+}
+function submitAttendence(absentRollNos, slotDropdownValue, subjectDropdownValue) {
+    var subjectTable = code;
+
+    subjectTable += "_" + subjectDropdownValue;
+    var dataComplex = JSON.stringify({
+        "absentRollNos":    absentRollNos,
+        "slot":             slotDropdownValue,
+        "subjectTable":     subjectTable,
+        "parentTable":      code
+    });
+    sendAjaxRequest('submitAttendence', dataComplex, function (response) {
+        console.log(response);
+        alert("Submitted Successfully");
     });
 }
 
@@ -69,20 +84,3 @@ function getCode(session, semester, section) {
     return code;
 
 }
-/*if (subject === 'SE') {
-        code += '1';
-    } else if (subject === 'WP') {
-        code += '2';
-    } else if (subject === 'Lab-Web Prog') {
-        code += '3';
-    } else if (subject === 'DM') {
-        code += '4';
-    } else if (subject === 'AOOP') {
-        code += '5';
-    } else if (subject === 'Lab-AOOP') {
-        code += '6';
-    } else if (subject === 'DE') {
-        code += '7';
-    } else if (subject === 'DAA') {
-        code += '8';
-    }*/

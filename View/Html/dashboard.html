@@ -16,6 +16,7 @@
         .date-container {
             margin-right: 10px;
         }
+
         .navbar {
             border: 2px solid black; /* Solid black border */
         }
@@ -34,6 +35,15 @@
         body {
             margin: 0;
         }
+
+        #tableContainer {
+            width: 100%;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -42,11 +52,11 @@
 </head>
 
 <body>
- 
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="logo-container">
-      <img src="https://seeklogo.com/images/N/numl-logo-8250E1FBC3-seeklogo.com.png" alt="NUMl Logo">
-    </div>
+            <img src="https://seeklogo.com/images/N/numl-logo-8250E1FBC3-seeklogo.com.png" alt="NUMl Logo">
+        </div>
 
 
         <div class="dropdown mr-3">
@@ -84,7 +94,7 @@
             <p class="mb-0">Today's Date: <span id="todayDate"></span></p>
         </div>
 
-        <button class="btn btn-primary" id="submitButton" disabled>Enter</button>
+        <button class="btn btn-primary" id="enterButton" disabled>Enter</button>
 
         <div class="dropdown mr-3">
             <select class="btn btn-secondary" id="subjectDropdown">
@@ -93,16 +103,19 @@
         </div>
 
         <div class="dropdown mr-3">
-            <select class="btn btn-secondary" id="subjectDropdown">
+            <select class="btn btn-secondary" id="slotDropdown">
                 <option value="" selected disabled>Select Slot</option>
                 <option value="1">Slot 1</option>
                 <option value="2">Slot 2</option>
             </select>
         </div>
-        <button class="btn btn-primary" id="submitAttendence">Submit</button>
+        <button class="btn btn-primary" id="submitButton" disabled>Submit</button>
 
     </nav>
-    <div id="tableContainer"></div>
+
+    <div>
+        <table id="tableContainer"> </table>
+    </div>
 
 
 
@@ -112,7 +125,7 @@
         $("#todayDate").text(formattedDate);
 
         $(document).ready(function () {
-            $("#sessionDropdown, #semesterDropdown, #sectionDropdown, #subjectDropdown").on('change', function () {
+            $("#sessionDropdown, #semesterDropdown, #sectionDropdown, #subjectDropdown , #slotDropdown").on('change', function () {
                 checkDropdowns();
             });
         });
@@ -120,15 +133,24 @@
             var session = $("#sessionDropdown").val();
             var semester = $("#semesterDropdown").val();
             var section = $("#sectionDropdown").val();
+            var subject = $("#subjectDropdown").val();
+            var slot = $("#slotDropdown").val();
 
             if (session !== null && semester !== null && section !== null) {
+                $("#enterButton").prop('disabled', false);
+            }
+            else {
+                $("#enterButton").prop('disabled', true);
+            }
+            if (subject !== null && slot !== null ) {
                 $("#submitButton").prop('disabled', false);
-            } else {
+            }
+            else {
                 $("#submitButton").prop('disabled', true);
             }
 
         }
-        $("#submitButton").on('click', function () {
+        $("#enterButton").on('click', function () {
             sendSelectedOptions();
         });
 
@@ -140,52 +162,45 @@
             getSubjectData(semester);
 
         }
-
+        var table;
         function createTable(data) {
-            // Create a table element with Bootstrap classes
-            var table = document.createElement("table");
+            var oldTable = document.getElementById("tableContainer");
+            oldTable.innerHTML = "";
+
+            table = document.createElement("table");
             table.classList.add("table", "table-bordered", "table-striped");
 
-            // Create a table header row with Bootstrap classes
             var headerRow = table.insertRow(0);
             headerRow.classList.add("thead-dark");
 
-            // Hardcoded column names
             var columnNames = ["Roll No", "Name", "Status"];
 
-            // Create header cells
             for (var i = 0; i < columnNames.length; i++) {
                 var th = document.createElement("th");
                 th.textContent = columnNames[i];
-                th.classList.add("text-left"); // Align text to the left
+                th.classList.add("text-left");
                 headerRow.appendChild(th);
             }
 
-            // Create table rows and cells with Bootstrap classes
             for (var i = 0; i < data.length; i++) {
                 var row = table.insertRow(i + 1);
 
-                // Add Roll No
                 var cellRollNo = row.insertCell();
                 cellRollNo.textContent = data[i]["rollNo"];
                 cellRollNo.classList.add("text-left");
 
-                // Add Name
                 var cellName = row.insertCell();
                 cellName.textContent = data[i]["NAME"];
                 cellName.classList.add("text-left");
 
-                // Add Status with dropdown
                 var cellStatus = row.insertCell();
-                var statusDropdown = createStatusDropdown(); // Create a dropdown for status
+                var statusDropdown = createStatusDropdown();
                 cellStatus.appendChild(statusDropdown);
             }
 
-            // Append the table to the container
             document.getElementById("tableContainer").appendChild(table);
         }
 
-        // Function to create a dropdown for status
         function createStatusDropdown() {
             var dropdown = document.createElement("select");
             dropdown.classList.add("form-control");
@@ -198,12 +213,28 @@
             optionAbsent.value = "Absent";
             optionAbsent.text = "Absent";
 
-            // Add options to the dropdown
             dropdown.appendChild(optionPresent);
             dropdown.appendChild(optionAbsent);
 
             return dropdown;
         }
+        document.getElementById("submitButton").addEventListener("click", function () {
+            var absentRollNos = [];
+            for (var i = 1; i < table.rows.length; i++) {
+                var statusDropdown = table.rows[i].cells[2].getElementsByTagName("select")[0];
+                var rollNo = table.rows[i].cells[0].textContent;
+
+                if (statusDropdown.value === "Absent") {
+                    absentRollNos.push(rollNo);
+                }
+            }
+            var slotDropdownValue = document.getElementById("slotDropdown").value;
+            var subjectDropdownValue = document.getElementById("subjectDropdown").value;
+
+            submitAttendence(absentRollNos, slotDropdownValue, subjectDropdownValue);
+
+            table.innerHTML = "";
+        });
 
     </script>
 
