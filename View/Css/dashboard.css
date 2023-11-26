@@ -1,0 +1,36 @@
+﻿.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+}
+
+.date-container {
+    margin-right: 10px;
+}
+
+.navbar {
+    border: 2px solid black; /* Solid black border */
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+    .logo-container img {
+        width: 150px; /* Adjust the size as needed */
+        height: auto;
+    }
+
+/* Clear the default margin on the body */
+body {
+    margin: 0;
+}
+
+#tableContainer {
+    width: 100%;
+    margin: 0;
+}
+
+table {
+    width: 100%;
+}

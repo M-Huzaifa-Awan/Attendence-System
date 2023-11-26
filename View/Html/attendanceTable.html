@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        th,
+        td {
+            min-width: 80px; /* Adjust the width as needed */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid mt-5">
+        <div class="table-responsive">
+            <table id="student-attendance" class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Student Name</th>
+                        <!-- Add week columns dynamically based on the 'Dates' array -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add rows dynamically based on the 'data' array -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Assume 'data' is an array containing information like 'rollNos', 'names', 'Dates', 'Slot1', 'Slot2'
+        var data = {
+            rollNos: ['001', '002'],
+            names: ['John Doe', 'Jane Doe'],
+            Dates: ['2023-01-01', '2023-01-08'],
+            Slot1: ['P', 'A'],
+            Slot2: ['P', 'A']
+        };
+
+        // Function to generate the table dynamically
+        function generateTable() {
+            var table = document.getElementById("student-attendance");
+
+            // Add week columns dynamically based on the 'Dates' array
+            for (var i = 0; i < data.Dates.length; i++) {
+                var thSlot1 = document.createElement("th");
+                thSlot1.textContent = formatDate(data.Dates[i]);
+                table.querySelector("thead tr").appendChild(thSlot1);
+            }
+
+            // Add rows dynamically based on the 'data' array
+            for (var j = 0; j < data.rollNos.length; j++) {
+                addRow(data.rollNos[j], data.names[j], data.Slot1[j], data.Slot2[j]);
+            }
+        }
+
+        // Function to add a row to the table
+        function addRow(rollNo, studentName, slot1, slot2) {
+            var table = document.getElementById("student-attendance");
+            var tbody = table.querySelector("tbody");
+
+            var row = document.createElement("tr");
+
+            var tdRollNo = document.createElement("td");
+            tdRollNo.textContent = rollNo;
+            row.appendChild(tdRollNo);
+
+            var tdName = document.createElement("td");
+            tdName.textContent = studentName;
+            row.appendChild(tdName);
+
+            // Add week columns dynamically based on the 'Dates' array
+            for (var i = 0; i < data.Dates.length; i++) {
+                var tdSlot1 = document.createElement("td");
+                tdSlot1.textContent = (i < data.Slot1.length) ? data.Slot1[i] : '-';
+                row.appendChild(tdSlot1);
+
+                var tdSlot2 = document.createElement("td");
+                tdSlot2.textContent = (i < data.Slot2.length) ? data.Slot2[i] : '-';
+                row.appendChild(tdSlot2);
+            }
+
+            tbody.appendChild(row);
+        }
+
+        // Function to format date as "dd-mm-yyyy"
+        function formatDate(dateString) {
+            var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options).replace(/\//g, '-');
+        }
+
+        // Call the function to generate the table
+        generateTable();
+    </script>
+</body>
+
+</html>

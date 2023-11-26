@@ -51,16 +51,32 @@ function submitAttendence(absentRollNos, slotDropdownValue, subjectDropdownValue
     var subjectTable = code;
 
     subjectTable += "_" + subjectDropdownValue;
-    var dataComplex = JSON.stringify({
-        "absentRollNos":    absentRollNos,
-        "slot":             slotDropdownValue,
-        "subjectTable":     subjectTable,
-        "parentTable":      code
-    });
-    sendAjaxRequest('submitAttendence', dataComplex, function (response) {
+
+    sendAjaxRequest('submitAttendence', absentRollNos, slotDropdownValue, subjectTable, code, function (response) {
         console.log(response);
         alert("Submitted Successfully");
     });
+
+    function sendAjaxRequest(action, absentRollNos, slot, subjectTable, parentTable, callback) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    callback(xhr.responseText);
+                } else {
+                    alert("Error in AJAX request");
+                }
+            }
+        }
+
+        xhr.open('POST', '../../Controller/dashboardController.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        var requestData = 'action=' + action + '&slot=' + slot + '&subjectTable=' + subjectTable + '&parentTable=' + parentTable  + '&array=' + absentRollNos;
+
+        xhr.send(requestData);
+    }
 }
 
 function getCode(session, semester, section) {

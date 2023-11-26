@@ -79,18 +79,15 @@ class User extends db
             return false;
         }
     }
-    public function submitAttendence($data)
+    public function submitAttendence($slot, $subjectTable, $parentTable, $array)
     {
         $conn = $this->con;
-       
 
-        $RollNos = $data['absentRollNos'];
-        $slot = $data['slot'];
-        $subjectTable = $data['subjectTable'];
-        $parentTable = $data['parentTable'];
+        $arrayString = $array;
+        $RollNos = explode(',', $arrayString);
 
         try {
-            mysqli_query($conn, "CALL sp_insert_roll_numbers('$parentTable', '$subjectTable');");
+            mysqli_query($conn, "CALL sp_insert_attendance_today('$parentTable', '$subjectTable');");
         }
         catch (Exception $e) {
             // Dont worry nothing will happen an exception is a must
