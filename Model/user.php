@@ -87,7 +87,7 @@ class User extends db
         $RollNos = explode(',', $arrayString);
 
         try {
-            mysqli_query($conn, "CALL sp_insert_attendance_today('$parentTable', '$subjectTable');");
+            mysqli_query($conn, "CALL sp_insert_attendance('$parentTable', '$subjectTable');");
         }
         catch (Exception $e) {
             // Dont worry nothing will happen an exception is a must

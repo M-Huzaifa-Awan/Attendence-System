@@ -85,9 +85,12 @@
                 checkDropdowns();
             });
         });
+
         function resetDropdowns() {
             $("#sessionDropdown, #semesterDropdown, #sectionDropdown, #subjectDropdown, #slotDropdown").val(null).trigger('change');
         }
+
+        //Buttons Enabeling and Disabling Fnctionality Code
         function checkDropdowns() {
             var session = $("#sessionDropdown").val();
             var semester = $("#semesterDropdown").val();
@@ -107,59 +110,58 @@
             else {
                 $("#submitButton").prop('disabled', true);
             }
-
         }
-        $("#enterButton").on('click', function () {
-            sendSelectedOptions();
-        });
 
-        function sendSelectedOptions() {
-            const session = $("#sessionDropdown").val();
-            const semester = $("#semesterDropdown").val();
-            const section = $("#sectionDropdown").val();
-            getDashboardData(session, semester, section);
-            getSubjectData(semester);
-
-        }
+        //Create Table Code
         var table;
         function createTable(data) {
             var oldTable = document.getElementById("tableContainer");
             oldTable.innerHTML = "";
-
+            // Create elements
             table = document.createElement("table");
-            table.classList.add("table", "table-bordered", "table-striped");
+            table.classList.add("attendance-table");
 
             var headerRow = table.insertRow(0);
-            headerRow.classList.add("thead-dark");
 
-            var columnNames = ["Roll No", "Name", "Status"];
+            var cellRollNo = document.createElement("th");
+            cellRollNo.textContent = "Roll No";
 
-            for (var i = 0; i < columnNames.length; i++) {
-                var th = document.createElement("th");
-                th.textContent = columnNames[i];
-                th.classList.add("text-left");
-                headerRow.appendChild(th);
-            }
+            var cellName = document.createElement("th");
+            cellName.textContent = "Name";
 
+            var cellStatus = document.createElement("th");
+            cellStatus.textContent = "Status";
+
+
+            // Append header cells
+            headerRow.appendChild(cellRollNo);
+            headerRow.appendChild(cellName);
+            headerRow.appendChild(cellStatus);
+
+
+            // Add data rows
             for (var i = 0; i < data.length; i++) {
-                var row = table.insertRow(i + 1);
 
-                var cellRollNo = row.insertCell();
-                cellRollNo.textContent = data[i]["rollNo"];
-                cellRollNo.classList.add("text-left");
+                var row = table.insertRow(-1);
 
-                var cellName = row.insertCell();
-                cellName.textContent = data[i]["NAME"];
-                cellName.classList.add("text-left");
+                var rNoCell = row.insertCell(0);
+                rNoCell.textContent = data[i].rollNo;
 
-                var cellStatus = row.insertCell();
+                var nameCell = row.insertCell(1);
+                nameCell.textContent = data[i].NAME;
+
+                var statusCell = row.insertCell(2);
                 var statusDropdown = createStatusDropdown();
-                cellStatus.appendChild(statusDropdown);
+                statusCell.appendChild(statusDropdown);
+
             }
 
-            document.getElementById("tableContainer").appendChild(table);
-        }
+            // Append table element to container
+            var tableContainer = document.getElementById("tableContainer");
+            tableContainer.innerHTML = "";
+            tableContainer.appendChild(table);
 
+        }
         function createStatusDropdown() {
             var dropdown = document.createElement("select");
             dropdown.classList.add("form-control");
@@ -177,6 +179,21 @@
 
             return dropdown;
         }
+
+        //On Enter Button Press
+        function sendSelectedOptions() {
+            const session = $("#sessionDropdown").val();
+            const semester = $("#semesterDropdown").val();
+            const section = $("#sectionDropdown").val();
+            getDashboardData(session, semester, section);
+            getSubjectData(semester);
+
+        }
+
+        //Buttons Functionality Call Code
+        $("#enterButton").on('click', function () {
+            sendSelectedOptions();
+        });
         document.getElementById("submitButton").addEventListener("click", function () {
             var absentRollNos = [];
             for (var i = 1; i < table.rows.length; i++) {
@@ -191,12 +208,10 @@
             var subjectDropdownValue = document.getElementById("subjectDropdown").value;
 
             submitAttendence(absentRollNos, slotDropdownValue, subjectDropdownValue);
-
+            resetDropdowns();
             table.innerHTML = "";
         });
-
     </script>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

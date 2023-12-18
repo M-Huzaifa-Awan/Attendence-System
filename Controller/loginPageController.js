@@ -30,8 +30,9 @@
         if (response === 'true') {
             // Redirect to dashboard.html on successful login
             window.location.href = 'dashboard.html';
-        } else {
-            document.getElementById('status').innerHTML = 'Wrong Credentials';
+        }
+        else {
+            document.querySelector('.wrapper').style.boxShadow ="13px 13px 20px #cbced1, -13px -13px 20px red";
         }
     });
 }
