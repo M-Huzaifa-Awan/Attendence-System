@@ -32,7 +32,9 @@
             window.location.href = 'dashboard.html';
         }
         else {
-            document.querySelector('.wrapper').style.boxShadow ="13px 13px 20px #cbced1, -13px -13px 20px red";
+
+            document.querySelector('.wrapper').style.boxShadow ="13px 13px 20px red, -13px -13px 20px red";
+            
         }
     });
 }
