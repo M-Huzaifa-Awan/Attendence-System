@@ -12,12 +12,12 @@ CREATE PROCEDURE sp_update_absent_students(
 )
 BEGIN
   SET @current_date = CURRENT_DATE();
+  SET @sql_update_query = CONCAT('UPDATE ', p_subjectTableName,' SET slot', p_slot, ' = "P" WHERE date = "', @current_date, '"'); 
+  PREPARE dynamic_update_sql_query FROM @sql_update_query;
 
-  IF p_rollNo = '' THEN
-    SET @sql_update_query = CONCAT('UPDATE ', p_subjectTableName,' SET slot', p_slot, ' = "P" WHERE date = "', @current_date, '"'); 
-  ELSE
-    SET @sql_update_query = CONCAT('UPDATE ', p_subjectTableName, ' SET slot', p_slot, ' = "A" WHERE rollNo = \'', p_rollNo, '\'');
-  END IF;
+  EXECUTE dynamic_update_sql_query;
+
+  SET @sql_update_query = CONCAT('UPDATE ', p_subjectTableName, ' SET slot', p_slot, ' = "A" WHERE rollNo = \'', p_rollNo, '\'');
 
   PREPARE dynamic_update_sql_query FROM @sql_update_query;
 

@@ -87,10 +87,18 @@ class User extends db
         $RollNos = explode(',', $arrayString);
 
         try {
-            mysqli_query($conn, "CALL sp_insert_attendance('$parentTable', '$subjectTable');");
-        }
-        catch (Exception $e) {
-            // Dont worry nothing will happen an exception is a must
+
+            $currentDate = date('Y-m-d');
+
+            $result = mysqli_query($conn, "SELECT 1 FROM $subjectTable WHERE DATE = '$currentDate'");
+
+            if (!$result->num_rows) {
+
+                mysqli_query($conn, "CALL sp_insert_attendance('$parentTable', '$subjectTable')");
+
+            }
+        } catch (Exception $e) {
+            echo 'Error in sp_update_absent_students: ' . $e->getMessage();
         }
 
         try {

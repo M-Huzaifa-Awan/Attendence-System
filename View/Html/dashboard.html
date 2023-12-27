@@ -209,6 +209,9 @@
 
             submitAttendence(absentRollNos, slotDropdownValue, subjectDropdownValue);
             resetDropdowns();
+            $("#subjectDropdown").empty();
+            $("#subjectDropdown").val("Select Subject");
+
             table.innerHTML = "";
         });
     </script>
